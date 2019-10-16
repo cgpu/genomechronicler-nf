@@ -3,12 +3,9 @@ Channel
     .ifEmpty { exit 1, "--bamFile not specified or no file found at that destination with the suffix .bam. Please make sure to provide the file path correctly}" }
     .set { chronicler_bam }
 
-
-if (params.vepFile) {
-    Channel.fromPath(params.vepFile)
-           .ifEmpty { exit 1, "--vepFile not specified or no file found at that destination with the suffix .html. Please make sure to provide the file path correctly}" }
-           .set { chronicler_vep }
-}
+Channel.fromPath(params.vepFile)
+        .ifEmpty { exit 1, "--vepFile not specified or no file found at that destination with the suffix .html. Please make sure to provide the file path correctly}" }
+        .set { chronicler_vep }
 
 process genomechronicler {
   tag "$bam"
@@ -23,7 +20,7 @@ process genomechronicler {
 
   script:
   
-  optional_argument = params.vepFile.endsWith("no_vepFile.txt") ? '' : "--vepFile ${vep}"
+  optional_argument = vep.endsWith("no_vepFile.txt") ? '' : "--vepFile ${vep}"
 
   """
   genomechronicler \
