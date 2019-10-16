@@ -24,6 +24,6 @@ process genomechronicler {
 
   """
   genomechronicler \
-  --bamFile $bam !optional_argument
+  --bamFile $bam $optional_argument
   """
 }
