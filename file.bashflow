@@ -1,0 +1,66 @@
+// Unwinding refactoring
+
+// process CreateVEPTables, If we are running VEP, call script or function to process the HTML into the needed tables
+GenomeChronicler_vepTables_fromVEP.pl  $vep_file
+
+
+// process RenameChromPrefix, Run script or subroutine to make sure that we don't have 'chr' in the contig names
+  #!/usr/bin/env perl
+
+  if(defined($BAM_file)) {
+
+    print STDERR "\t +++ INFO: Preprocessing BAM file\n";	
+    
+    if((!-e $BAM_file.".clean.BAM") or (!-e $BAM_file.".clean.BAM.bai")) {
+      &cleanBAMfile_noCHR($BAM_file);
+    }
+
+    $BAM_file = $BAM_file.".clean.BAM";
+  }
+
+
+// process InferAncestry, Use the BAM to call the right script to compute currentAncestryPlot
+  #!/usr/bin/env perl
+
+  GenomeChronicler_ancestry_generator_fromBAM.pl \
+  $BAM_file \
+  $resultsdir \
+  $GATKthreads ${task.cpus}
+
+
+// process PlotAncestry, Use the BAM to call the right script to compute currentAncestryPlot
+  GenomeChronicler_plot_generator_fromAncestry.R \
+  --id ${sample.simpleName} \
+  --sample ${sample}
+
+
+// process CallVariants, Use the BAM to call the genotypes on the needed positions for this
+  GenomeChronicler_afogeno_generator_fromBAM.pl
+  $BAM_file \
+  $resultsdir . \
+  $GATKthreads ${task.cpus}
+
+// process GenerateReportTables, Use the generated genotypes file to produce the report tables by linking with the databases
+  GenomeChronicler_genoTables_fromAfoGeno.pl $afogeno_file
+
+
+// process FilterReportTables, Table filtering for variants that have 0 magnitude and/or are unsupported by external links.
+  GenomeChronicler_quickFilterFinalReportTables.pl $latest.good.reportTable.csv
+  GenomeChronicler_quickFilterFinalReportTables.pl $latest.bad.reportTable.csv
+
+// process SummarisePhenotypes, Call script to summarise found phenotypes as XLS spreadsheet
+  GenomeChronicler_XLSX_fromTables.pl \
+  ${sample_folder_with_results} \
+  ${sample}_genotypes_${dtag}.xlsx"
+
+// process CompileGenomeReport, Call script to summarise found phenotypes as XLS spreadsheet
+  &runLatex();
+
+  sub runLatex {
+      local $CWD = "${resultsdir}/results/results_${sample}";
+
+    for(my $i = 0; $i < 3 ; $i++) {
+      system("pdflatex -interaction=nonstopmode ${templatetex} .tex
+    }
+  }
+  
