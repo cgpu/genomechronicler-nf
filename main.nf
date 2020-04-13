@@ -16,7 +16,8 @@ process genomechronicler {
   file(vep) from chronicler_vep
 
   output:
-  file("*") into chronicler_results
+  file("**/**/${bam}_report*") into html_report
+  file("*") into all_results
 
   script:
   
@@ -24,6 +25,33 @@ process genomechronicler {
 
   """
   genomechronicler \
-  --bamFile $bam $optional_argument
+  --resultsDir '/GenomeChronicler' \
+  --bamFile $bam \
+  $optional_argument &> STDERR.txt
+
+  cp -r /GenomeChronicler/results/results_${bam.simpleName} .
+  mv STDERR.txt results_${bam.simpleName}/
+
+  mkdir dump
+  cp -r /GenomeChronicler/ dump
+  """
+}
+
+process pdf2html {
+  tag "$bam"
+  publishDir "$params.outdir/MultiQC/", mode: 'copy'
+  container 'darrenmei96/pdf2htmlex-with-msfonts'
+
+  input:
+  file(pdf_report) from html_report
+
+  output:
+  file("*") into html_result
+
+  script:
+
+  """
+  pdf2htmlEX $pdf_report
+  mv ${pdf_report.baseName}.html multiqc_report.html
   """
 }
