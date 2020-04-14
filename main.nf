@@ -16,7 +16,7 @@ process genomechronicler {
   file(vep) from chronicler_vep
 
   output:
-  file('**/**/${bam}*report*.pdf') into html_report
+  file('**/**/*report*.pdf') into html_report
   file("*") into all_results
 
   script:
