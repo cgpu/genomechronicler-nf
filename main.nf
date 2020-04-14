@@ -43,7 +43,7 @@ process pdf2html {
   container 'darrenmei96/pdf2htmlex-with-msfonts'
 
   input:
-  file(pdf_report) from html_report.first()
+  file("*html") from html_report.first()
 
   output:
   file("*") into html_result
