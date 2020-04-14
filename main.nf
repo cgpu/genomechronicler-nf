@@ -16,7 +16,7 @@ process genomechronicler {
   file(vep) from chronicler_vep
 
   output:
-  file('**/**/*report*.pdf') into html_report
+  file("${bam.simpleName}_report.pdf") into html_report
   file("*") into all_results
 
   script:
@@ -30,6 +30,7 @@ process genomechronicler {
   $optional_argument &> STDERR.txt
 
   cp -r /GenomeChronicler/results/results_${bam.simpleName} .
+  cp /GenomeChronicler/results/results_${bam.simpleName}/${bam.simpleName}_*.pdf ${bam.simpleName}_report.pdf
   mv STDERR.txt results_${bam.simpleName}/
 
   mkdir dump
@@ -43,10 +44,10 @@ process pdf2html {
   container 'darrenmei96/pdf2htmlex-with-msfonts'
 
   input:
-  file("*html") from html_report.first()
+  file(pdf_report) from html_report
 
   output:
-  file("*") into html_result
+  file("multiqc_report.html") into html_result
 
   script:
 
