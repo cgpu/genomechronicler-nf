@@ -38,12 +38,12 @@ process genomechronicler {
 }
 
 process pdf2html {
-  tag "$bam"
+  tag "$pdf_report"
   publishDir "$params.outdir/MultiQC/", mode: 'copy'
   container 'darrenmei96/pdf2htmlex-with-msfonts'
 
   input:
-  file(pdf_report) from html_report
+  file(pdf_report) from html_report.first()
 
   output:
   file("*") into html_result
