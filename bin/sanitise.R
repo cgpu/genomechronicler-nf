@@ -17,7 +17,8 @@ if (col_names == FALSE) {
   }
 
 for (col in col_names) {
-  if (grepl(pattern, table[[col]][1], fixed = TRUE)) {
+  col_as_string <- paste(table[[col]], collapse = "")
+  if (grepl(pattern, col_as_string, fixed = TRUE)) {
 
   url <- paste0(col, "_url")
   table[[url]] <- gsub("\\href\\{", "", table[[col]])
@@ -29,12 +30,13 @@ for (col in col_names) {
   # prepare url for DT::datatable
   table[[col]] <- paste0("<a href='",
                       table[[url]],
-                      table[[col]],
                       "'",
                       "target='blank",
                       "'>",
                       table[[col]],
-                      "</a>")
+                      "</a>") 
+  as.data.frame(table) %>% 
+    dplyr::mutate_all(stringr::str_replace_all,"<a href=''target='blank'></a>", "") -> table
     }
   }
 return(table)
