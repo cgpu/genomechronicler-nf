@@ -74,11 +74,9 @@ htmltools::tags$figcaption( style = 'caption-side: bottom; text-align: center; f
 
 # Traits (based on SNPedia information)
 
-
 |    Existing research has associated many variants with phenotypic traits, some of which can be perceived as beneficial while others appear to have a harmful effect. Some traits are complex and can be affected by several variants. It is likely that some of these would confer a higher risk while others a lower risk of trait manifestation. These can not be combined linearly to produce an actual risk of disease.
 
-|    It is important to note that in most cases genomic data is probabilistic, not deterministic- i.e. having a genetic
-predisposition for a disease is not a diagnosis; rather, it shows an increased likelihood of developing that disease. Also, one person can have both potentially beneficial and harmful variants in the same gene, or associated with the same disease.
+|    It is important to note that in most cases genomic data is probabilistic, not deterministic- i.e. having a genetic predisposition for a disease is not a diagnosis; rather, it shows an increased likelihood of developing that disease. Also, one person can have both potentially beneficial and harmful variants in the same gene, or associated with the same disease.
 
 |    Some variants can also affect certain populations more, or will only aect a particular gender. For example, a variant for higher risk of endometriosis in the sequence of a male will not directly affect that person, but can be passed on to descendants.
 
