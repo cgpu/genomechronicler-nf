@@ -1,0 +1,4 @@
+Mag.,Identifier,Genotype,Summary,GnomAD,GetEvidence,ClinVar
+2,\href{https://www.snpedia.com/index.php/Rs3738579}{rs3738579},(C;T),\href{https://www.snpedia.com/index.php/Rs3738579}{0.5x decreased risk for cervical cancer: HNSCC:...},\href{http://gnomad.broadinstitute.org/awesome?query=rs3738579}{Link},,
+2,\href{https://www.snpedia.com/index.php/Rs801114}{rs801114},(T;T),\href{https://www.snpedia.com/index.php/Rs801114}{0.78x decreased Basal Cell Carcinoma risk.},\href{http://gnomad.broadinstitute.org/awesome?query=rs801114}{Link},\href{http://evidence.pgp-hms.org/rs801114}{Link},
+1,\href{https://www.snpedia.com/index.php/Rs800292}{rs800292},(C;T),\href{https://www.snpedia.com/index.php/Rs800292}{1% decreased risk of macular degeneration},\href{http://gnomad.broadinstitute.org/awesome?query=rs800292}{Link},\href{http://evidence.pgp-hms.org/rs800292}{Link},\href{http://www.ncbi.nlm.nih.gov/clinvar/?term=rs800292}{Link}

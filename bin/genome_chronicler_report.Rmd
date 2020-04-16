@@ -1,0 +1,143 @@
+---
+output: 
+  html_document:
+    code_download: true
+    toc: true                  # table of content true
+    toc_depth: 3               # upto three depths of headings (specified by #, ## and ###)
+    toc_float: true
+    number_sections: true     # if you want number sections at each table header
+    theme: united              # many options for theme, this one is my favorite.
+    highlight: tango           # specifies the syntax highlighting style
+    css: 'style.css'
+params:
+  sample_id:  "uk35C650"
+title: "`r paste0('PGP-UK Genomics Report for ', params$sample_id)`"
+author: ""
+date: ""
+---
+
+<style>
+body {
+text-align: justify}
+</style>
+
+```{r include = FALSE}
+knitr::opts_chunk$set(echo=FALSE)
+```
+
+
+```{r echo = FALSE}
+source("DTable.R")
+source("sanitise.R")
+
+suppressPackageStartupMessages({
+
+library(magrittr)
+library(DT)
+library(data.table)
+library(htmltools)
+library(stringr)
+library(dplyr)
+  
+   })
+```
+
+# Summary
+
+|    This genome report was produced using collaborative research tools, including SNPedia and GetEvidence. This section shows an overview of all the small variants which were found in the genome for this individual, when compared with a reference genome. These variants are summarised in Table 1 and the pie-charts in Figures 2, 3 and 4.
+
+|    This document contains hyperlinks, shown in grey, that will take you to external websites where you can find more detailed explanations. Some of the technical terms are also explained in more detail in the Ensembl Glossary. We would welcome your feedback about this report, for example, if you would like more information about anything or if any of thelinks have become inactive. You can contact us at: pgp-uk@ucl.ac.uk.
+
+|    This summary shows an overview of all the variants which were found in the genome for this individual. The "variants remaining after filtering" refers to any differences in the DNA identified when compared to the reference genome. Of these, the majority will have already been found in some other sequenced individual and put on a database (existing variants) while others have not yet been annotated (novel variants).
+
+|    "Overlapped genes" refers to the number of times where a variant was found in a region of the genome containing a gene. The diagram in Figure 1 is a simplification of the usual gene structure. "Exon" refers to the part of the gene which goes on to form a protein, and variants in this part of the gene are more likely to cause changes in the shape of the protein. Upstream, downstream, intronic and intergenic variants are more likely to alter the regulation of that gene but will not change the protein itself.
+
+|    A transcript for a protein-coding gene can include the exons, introns and other gene features that are transcribed and important for gene function but might not be translated into the nal protein. Not all transcripts are for protein-coding genes, with many containing non-coding RNAs that can be overlapping other genes, in introns or in intergenic regions.
+
+```{r}
+figure_number  <- "Figure 1: " 
+figure_caption <- "Diagram of gene structure indicating locations of potential variants"
+knitr::include_graphics("../assets/gene_structure.png", )
+htmltools::tags$figcaption( style = 'caption-side: bottom; text-align: center; font-size: 80%; color: #71879d',
+                            htmltools::em(figure_number), 
+                            htmltools::em(figure_caption))
+```
+
+
+# Ancestry
+
+
+|    This plot shows the distribution of the genomes of different populations. Data from several studies which used whole genome sequencing was used to see the relationships between the genomes of the populations. It shows how closely related certain populations are genetically: Groups which cluster closely are more genetically similar than groups which are further apart. The black star symbol shows where this PGP-UK participant sits in relation to other populations, indicating their ancestry and their most closely related populations according to genetic sequence.
+
+|    Please note that this analysis is limited by the populations available in the 1000 genomes project (1kGP) data. If there are European subpopulations reported, and the ancestry of the participant does not correspond to any of the 1kGP populations, the closest 1kGP sampled subpopulation will be shown (even though it might be different from the participant's actual ancestry).
+
+
+# Traits (based on SNPedia information)
+
+
+|    Existing research has associated many variants with phenotypic traits, some of which can be perceived as beneficial while others appear to have a harmful effect. Some traits are complex and can be affected by several variants. It is likely that some of these would confer a higher risk while others a lower risk of trait manifestation. These can not be combined linearly to produce an actual risk of disease.
+
+|    It is important to note that in most cases genomic data is probabilistic, not deterministic- i.e. having a genetic
+predisposition for a disease is not a diagnosis; rather, it shows an increased likelihood of developing that disease. Also, one person can have both potentially beneficial and harmful variants in the same gene, or associated with the same disease.
+
+|    Some variants can also affect certain populations more, or will only aect a particular gender. For example, a variant for higher risk of endometriosis in the sequence of a male will not directly affect that person, but can be passed on to descendants.
+
+|    While many traits are the result of a unique variant, many are the combination of several variants throughout the genome. In SNPedia, these are called tables. These can integrate some of the information already present in the single variant tables, or be the combination of variants that have no phenotypic effect on their own, but contribute to a trait when together.
+
+|    The variants in the following tables are sorted by magnitude. This is a subjective measure dened in SNPedia to highlight the perceived importance of the genotype described. At the moment this scale goes from 0 to 10. You can read more about it by visiting their explanatory webpage.
+
+|    As our knowledge grows, the interpretation of the eect of certain variants might change. Clicking on the links in the genome report tables will take you to websites containing more information about each variant.
+
+## Possibly Beneficial Traits
+
+```{r}
+toKeep  <- c("Mag.", "Identifier", "Genotype", "Summary", "GnomAD", "GetEvidence", "ClinVar")
+table <- data.table::fread("../testdata/latest.good.reportTable.csv")
+saned   <- sanitise(table)
+DTable(saned[,toKeep],table_caption = "")
+```
+
+## Possibly Harmful Traits
+
+```{r}
+toKeep <- c("Mag.", "Identifier", "Genotype", "Summary", "GnomAD", "GetEvidence", "ClinVar")
+table <- data.table::fread("../testdata/latest.bad.reportTable.csv")
+saned   <- sanitise(table)
+DTable(saned[,toKeep],table_caption = "")
+```
+
+## Genosets (Multi-variant Phenotypes)
+
+```{r}
+toKeep <- c("Magnitude", "Identifier", "Summary")
+table <- data.table::fread("../testdata/latest.genoset.reportTable.csv")
+saned   <- sanitise(table)
+rownames(saned) <- c()
+DTable(saned[,toKeep],table_caption = "")
+```
+
+#  Report Metadata
+
+
+<div class = "row">
+<div class = "col-md-2">
+
+</div>
+
+<div class = "col-md-6">
+
+```{r, warning=FALSE}
+df <- head(iris[, 1:2])
+colnames(df) <- c("Software", "Version")
+knitr::kable(df,format = "html", align = "c")
+
+```
+</div>
+
+<div class = "col-md-1">
+
+</div>
+</div>
+
+
+

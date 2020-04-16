@@ -1,0 +1,7 @@
+Feature	Count
+Lines of input read	4130989
+Variants remaining after filtering	4105273
+Novel / existing variants	103667 (2.5%) / 4001606 (97.5%)
+Overlapped genes	54674
+Overlapped transcripts	64349
+Overlapped regulatory features	211555
