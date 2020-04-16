@@ -37,7 +37,7 @@ DTable <- function(df = df,
                 options = list(
                   
                   # Does not allow columnful dataframes go rogue and tucks them in to fit page width
-                  scrollX = FALSE,
+                  scrollX = TRUE,
                   scrollCollapse = TRUE, 
                   
                   # Defines all capabilities
